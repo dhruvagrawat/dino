@@ -6,11 +6,6 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#f7f7f7"
-    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.dhruvagrawat.dinodash"
@@ -33,6 +28,16 @@
       "eas": {
         "projectId": "0293d64e-de7b-45ea-83e6-3dd8151fe3ed"
       }
-    }
+    },
+    "plugins": [
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#f7f7f7"
+        }
+      ]
+    ]
   }
 }
