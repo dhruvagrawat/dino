@@ -74,9 +74,15 @@ export default function Home() {
         <div className="mx-auto max-w-5xl px-5 py-20 text-center">
           <h2 className="font-mono text-2xl font-bold tracking-widest text-[#1f2430]">GET DINO</h2>
           <p className="mx-auto mt-3 max-w-md text-[#1f2430]/65">
-            Coming soon to the Google Play Store. Built with Expo &amp; React Native.
+            Download the Android app now. Built with Expo &amp; React Native.
           </p>
-          <div className="mt-8 flex justify-center">
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <a
+              href={site.apkUrl}
+              className="rounded-2xl bg-[#16c172] px-8 py-4 text-base font-semibold text-white shadow-lg shadow-[#16c172]/30 transition hover:opacity-90"
+            >
+              ⬇ Download APK (Android)
+            </a>
             {site.playStoreUrl ? (
               <a
                 href={site.playStoreUrl}
@@ -92,6 +98,10 @@ export default function Home() {
               </span>
             )}
           </div>
+          <p className="mx-auto mt-5 max-w-md text-xs text-[#1f2430]/45">
+            Android only · v{site.appVersion} · {site.apkSize}. After downloading, open the file and
+            allow installs from your browser when prompted (Settings → Install unknown apps).
+          </p>
         </div>
       </section>
 
