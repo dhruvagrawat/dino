@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Animated, Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { PixelSprite } from '../components/PixelSprite';
 import { DAY, FONT, PIXEL, SHADOW, SHADOW_SM, dinoById, modeById, skinById } from '../constants';
 import * as PX from '../pixels';
@@ -80,6 +80,15 @@ export function MenuScreen({ profile, onNavigate }: Props) {
       </ScrollView>
 
       <Text style={[styles.credit, FONT]}>made with ♥ by quadcydle</Text>
+      <View style={styles.legalRow}>
+        <Pressable hitSlop={8} onPress={() => Linking.openURL('https://dino.dhruvagrawat.com/privacy')}>
+          <Text style={[styles.legalLink, FONT]}>Privacy</Text>
+        </Pressable>
+        <Text style={[styles.legalDot, FONT]}>·</Text>
+        <Pressable hitSlop={8} onPress={() => Linking.openURL('https://dino.dhruvagrawat.com/terms')}>
+          <Text style={[styles.legalLink, FONT]}>Terms</Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
@@ -122,7 +131,10 @@ const styles = StyleSheet.create({
   tileLabel: { fontSize: 16, fontWeight: 'bold', letterSpacing: 2, color: DAY.ground, marginTop: 6 },
   tileSub: { fontSize: 10, letterSpacing: 1, color: DAY.ground, opacity: 0.5, marginTop: 2 },
   stats: { gap: 10, paddingBottom: 16, paddingTop: 2 },
-  credit: { textAlign: 'center', fontSize: 10, letterSpacing: 1, color: DAY.ground, opacity: 0.4, paddingBottom: 18 },
+  credit: { textAlign: 'center', fontSize: 10, letterSpacing: 1, color: DAY.ground, opacity: 0.4, paddingBottom: 6 },
+  legalRow: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 8, paddingBottom: 18 },
+  legalLink: { fontSize: 10, letterSpacing: 1, color: DAY.ground, opacity: 0.45, textDecorationLine: 'underline' },
+  legalDot: { fontSize: 10, color: DAY.ground, opacity: 0.45 },
   stat: { backgroundColor: '#fff', borderRadius: 16, paddingHorizontal: 18, paddingVertical: 11, alignItems: 'center', minWidth: 72, ...SHADOW_SM },
   statValue: { fontSize: 18, fontWeight: 'bold', color: DAY.ground },
   statLabel: { fontSize: 9, letterSpacing: 2, color: DAY.ground, opacity: 0.5, marginTop: 2 },
