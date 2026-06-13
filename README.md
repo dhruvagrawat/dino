@@ -1,4 +1,4 @@
-# 🦖 Dino Dash
+# 🦖 Dino
 
 A polished, offline Chrome-dino-style endless runner built with **Expo + React Native + TypeScript**. Everything — points, unlocks and high scores — is stored locally on the device. No accounts, no cloud, no internet required.
 

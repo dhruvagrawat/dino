@@ -104,3 +104,19 @@ export const NIGHT = {
 };
 
 export const FONT = { fontFamily: 'monospace' as const };
+
+// soft elevation presets (iOS shadow* + Android elevation)
+export const SHADOW = {
+  shadowColor: '#1f2430',
+  shadowOffset: { width: 0, height: 8 },
+  shadowOpacity: 0.14,
+  shadowRadius: 16,
+  elevation: 6,
+};
+export const SHADOW_SM = {
+  shadowColor: '#1f2430',
+  shadowOffset: { width: 0, height: 3 },
+  shadowOpacity: 0.1,
+  shadowRadius: 7,
+  elevation: 3,
+};
