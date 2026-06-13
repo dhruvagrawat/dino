@@ -9,6 +9,10 @@ web-build/
 out/
 build/
 
+# android build artifacts (distributed via GitHub Releases, not committed)
+*.apk
+*.aab
+
 # misc
 .DS_Store
 *.pem
