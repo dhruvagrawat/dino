@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { PixelSprite } from '../components/PixelSprite';
-import { DAY, DINOS, FONT, PIXEL, SKINS } from '../constants';
+import { DAY, DINOS, FONT, PIXEL, SHADOW_SM, SKINS } from '../constants';
 import * as PX from '../pixels';
 import { DinoId, Profile, SkinId } from '../types';
 
@@ -126,28 +126,28 @@ const styles = StyleSheet.create({
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 },
   back: { fontSize: 15, letterSpacing: 1, color: DAY.ground, fontWeight: 'bold' },
   title: { fontSize: 22, fontWeight: 'bold', letterSpacing: 3, color: DAY.ground },
-  points: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff3bf', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 18 },
+  points: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff3bf', paddingHorizontal: 14, paddingVertical: 7, borderRadius: 22, ...SHADOW_SM },
   pointStar: { color: '#f59f00', fontSize: 14, marginRight: 5 },
   pointText: { color: '#b8860b', fontWeight: 'bold', fontSize: 15 },
-  tabs: { flexDirection: 'row', backgroundColor: '#e9ecef', borderRadius: 12, padding: 4, marginBottom: 18 },
-  tab: { flex: 1, paddingVertical: 10, alignItems: 'center', borderRadius: 9 },
-  tabActive: { backgroundColor: '#fff' },
+  tabs: { flexDirection: 'row', backgroundColor: '#e9ecef', borderRadius: 16, padding: 5, marginBottom: 18 },
+  tab: { flex: 1, paddingVertical: 11, alignItems: 'center', borderRadius: 12 },
+  tabActive: { backgroundColor: '#fff', ...SHADOW_SM },
   tabText: { fontSize: 14, letterSpacing: 2, color: DAY.ground, opacity: 0.5, fontWeight: 'bold' },
   tabTextActive: { opacity: 1 },
-  list: { gap: 12 },
-  card: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderWidth: 2, borderColor: '#e9ecef', borderRadius: 14, padding: 14 },
+  list: { gap: 14 },
+  card: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderWidth: 2, borderColor: 'transparent', borderRadius: 20, padding: 15, ...SHADOW_SM },
   cardSelected: { borderColor: '#2f9e44' },
   preview: { width: 72, height: 64, alignItems: 'center', justifyContent: 'center' },
   swatchWrap: { flexDirection: 'row', alignItems: 'flex-end' },
-  swatch: { width: 34, height: 34, borderRadius: 8 },
-  swatchSmall: { width: 20, height: 20, marginLeft: -8, marginBottom: 4 },
+  swatch: { width: 34, height: 34, borderRadius: 11 },
+  swatchSmall: { width: 20, height: 20, borderRadius: 7, marginLeft: -8, marginBottom: 4 },
   info: { flex: 1, marginLeft: 10 },
   name: { fontSize: 18, fontWeight: 'bold', letterSpacing: 1, color: DAY.ground },
   tagline: { fontSize: 11, color: DAY.ground, opacity: 0.55, marginTop: 3, lineHeight: 15 },
-  actionBtn: { minWidth: 64, paddingHorizontal: 12, paddingVertical: 10, borderRadius: 9, alignItems: 'center' },
-  buyBtn: { backgroundColor: '#f59f00' },
+  actionBtn: { minWidth: 64, paddingHorizontal: 14, paddingVertical: 11, borderRadius: 13, alignItems: 'center' },
+  buyBtn: { backgroundColor: '#f59f00', ...SHADOW_SM },
   lockedBtn: { backgroundColor: '#f1f3f5' },
   useBtn: { backgroundColor: '#e9ecef' },
-  equipped: { backgroundColor: '#2f9e44' },
+  equipped: { backgroundColor: '#2f9e44', ...SHADOW_SM },
   actionText: { fontSize: 13, fontWeight: 'bold', letterSpacing: 1 },
 });

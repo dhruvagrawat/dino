@@ -41,7 +41,7 @@ export function SplashScreen({ onDone }: Props) {
           body={DAY.ground}
           eye={DAY.bg}
         />
-        <Text style={[styles.title, FONT]}>DINO DASH</Text>
+        <Text style={[styles.title, FONT]}>DINO</Text>
         <Text style={[styles.sub, FONT]}>tap • run • survive</Text>
       </View>
       <View style={styles.ground} />

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { DAY, FONT, MODES } from '../constants';
+import { DAY, FONT, MODES, SHADOW, SHADOW_SM } from '../constants';
 import { ModeId, Profile } from '../types';
 
 interface Props {
@@ -85,11 +85,11 @@ const styles = StyleSheet.create({
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 },
   back: { fontSize: 15, letterSpacing: 1, color: DAY.ground, fontWeight: 'bold' },
   title: { fontSize: 22, fontWeight: 'bold', letterSpacing: 3, color: DAY.ground },
-  points: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff3bf', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 18 },
+  points: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff3bf', paddingHorizontal: 14, paddingVertical: 7, borderRadius: 22, ...SHADOW_SM },
   pointStar: { color: '#f59f00', fontSize: 14, marginRight: 5 },
   pointText: { color: '#b8860b', fontWeight: 'bold', fontSize: 15 },
-  list: { gap: 14 },
-  card: { borderWidth: 2, borderColor: 'transparent', borderRadius: 16, padding: 18 },
+  list: { gap: 16 },
+  card: { borderWidth: 2, borderColor: 'transparent', borderRadius: 22, padding: 20, ...SHADOW },
   cardTop: { flexDirection: 'row', alignItems: 'center', marginBottom: 10 },
   icon: { fontSize: 32, marginRight: 14 },
   name: { fontSize: 22, fontWeight: 'bold', letterSpacing: 2 },
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   mult: { paddingHorizontal: 10, paddingVertical: 5, borderRadius: 8 },
   multText: { color: '#fff', fontWeight: 'bold', fontSize: 14 },
   tagline: { fontSize: 13, opacity: 0.7, lineHeight: 18, marginBottom: 14 },
-  btn: { paddingVertical: 13, borderRadius: 10, alignItems: 'center' },
+  btn: { paddingVertical: 14, borderRadius: 14, alignItems: 'center' },
   btnOutline: { backgroundColor: 'transparent', borderWidth: 2 },
   btnText: { fontWeight: 'bold', fontSize: 14, letterSpacing: 2 },
 });

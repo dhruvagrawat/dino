@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { PixelSprite } from '../components/PixelSprite';
-import { DAY, FONT, PIXEL, dinoById, modeById, skinById } from '../constants';
+import { DAY, FONT, PIXEL, SHADOW, SHADOW_SM, dinoById, modeById, skinById } from '../constants';
 import * as PX from '../pixels';
 import { Profile, Screen } from '../types';
 
@@ -37,7 +37,7 @@ export function MenuScreen({ profile, onNavigate }: Props) {
   return (
     <View style={styles.root}>
       <View style={styles.header}>
-        <Text style={[styles.title, FONT]}>DINO DASH</Text>
+        <Text style={[styles.title, FONT]}>DINO</Text>
         <View style={styles.points}>
           <Text style={[styles.pointStar, FONT]}>★</Text>
           <Text style={[styles.pointText, FONT]}>{profile.points}</Text>
@@ -105,22 +105,22 @@ const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: DAY.bg, paddingTop: 60, paddingHorizontal: 24 },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   title: { fontSize: 26, fontWeight: 'bold', letterSpacing: 3, color: DAY.ground },
-  points: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff3bf', paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20 },
+  points: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff3bf', paddingHorizontal: 16, paddingVertical: 8, borderRadius: 24, ...SHADOW_SM },
   pointStar: { color: '#f59f00', fontSize: 16, marginRight: 6 },
   pointText: { color: '#b8860b', fontWeight: 'bold', fontSize: 16 },
   stage: { flex: 1, alignItems: 'center', justifyContent: 'center', minHeight: 220 },
   stageGround: { width: 200, height: 2, backgroundColor: DAY.ground, opacity: 0.35, marginTop: 4 },
   dinoName: { marginTop: 16, fontSize: 13, letterSpacing: 3, color: DAY.ground, opacity: 0.6 },
-  playBtn: { borderRadius: 16, paddingVertical: 20, alignItems: 'center', marginBottom: 16 },
+  playBtn: { borderRadius: 26, paddingVertical: 22, alignItems: 'center', marginBottom: 18, ...SHADOW },
   playText: { color: '#fff', fontSize: 24, fontWeight: 'bold', letterSpacing: 4 },
-  playMode: { color: 'rgba(255,255,255,0.8)', fontSize: 11, letterSpacing: 3, marginTop: 4 },
+  playMode: { color: 'rgba(255,255,255,0.85)', fontSize: 11, letterSpacing: 3, marginTop: 4 },
   row: { flexDirection: 'row', gap: 14, marginBottom: 18 },
-  tile: { flex: 1, backgroundColor: '#fff', borderWidth: 2, borderColor: '#e9ecef', borderRadius: 14, paddingVertical: 18, alignItems: 'center' },
+  tile: { flex: 1, backgroundColor: '#fff', borderRadius: 22, paddingVertical: 20, alignItems: 'center', ...SHADOW_SM },
   tileEmoji: { fontSize: 24, color: DAY.ground },
   tileLabel: { fontSize: 16, fontWeight: 'bold', letterSpacing: 2, color: DAY.ground, marginTop: 6 },
   tileSub: { fontSize: 10, letterSpacing: 1, color: DAY.ground, opacity: 0.5, marginTop: 2 },
   stats: { gap: 10, paddingBottom: 30, paddingTop: 2 },
-  stat: { backgroundColor: '#f1f3f5', borderRadius: 12, paddingHorizontal: 18, paddingVertical: 10, alignItems: 'center', minWidth: 70 },
+  stat: { backgroundColor: '#fff', borderRadius: 16, paddingHorizontal: 18, paddingVertical: 11, alignItems: 'center', minWidth: 72, ...SHADOW_SM },
   statValue: { fontSize: 18, fontWeight: 'bold', color: DAY.ground },
   statLabel: { fontSize: 9, letterSpacing: 2, color: DAY.ground, opacity: 0.5, marginTop: 2 },
 });
