@@ -46,6 +46,7 @@ export function SplashScreen({ onDone }: Props) {
       </View>
       <View style={styles.ground} />
       <Text style={[styles.loading, FONT]}>LOADING…</Text>
+      <Text style={[styles.credit, FONT]}>made with ♥ by quadcydle</Text>
     </Animated.View>
   );
 }
@@ -63,4 +64,5 @@ const styles = StyleSheet.create({
   sub: { fontSize: 13, letterSpacing: 4, color: DAY.ground, opacity: 0.5, marginTop: 8 },
   ground: { position: 'absolute', bottom: 120, left: 0, width: W, height: 2, backgroundColor: DAY.ground, opacity: 0.4 },
   loading: { position: 'absolute', bottom: 70, fontSize: 12, letterSpacing: 3, color: DAY.ground, opacity: 0.5 },
+  credit: { position: 'absolute', bottom: 36, fontSize: 10, letterSpacing: 1, color: DAY.ground, opacity: 0.4 },
 });

@@ -78,6 +78,8 @@ export function MenuScreen({ profile, onNavigate }: Props) {
         <Stat label="SKINS" value={`${profile.unlockedSkins.length}/5`} />
         <Stat label="MODES" value={`${profile.unlockedModes.length}/3`} />
       </ScrollView>
+
+      <Text style={[styles.credit, FONT]}>made with ♥ by quadcydle</Text>
     </View>
   );
 }
@@ -119,7 +121,8 @@ const styles = StyleSheet.create({
   tileEmoji: { fontSize: 24, color: DAY.ground },
   tileLabel: { fontSize: 16, fontWeight: 'bold', letterSpacing: 2, color: DAY.ground, marginTop: 6 },
   tileSub: { fontSize: 10, letterSpacing: 1, color: DAY.ground, opacity: 0.5, marginTop: 2 },
-  stats: { gap: 10, paddingBottom: 30, paddingTop: 2 },
+  stats: { gap: 10, paddingBottom: 16, paddingTop: 2 },
+  credit: { textAlign: 'center', fontSize: 10, letterSpacing: 1, color: DAY.ground, opacity: 0.4, paddingBottom: 18 },
   stat: { backgroundColor: '#fff', borderRadius: 16, paddingHorizontal: 18, paddingVertical: 11, alignItems: 'center', minWidth: 72, ...SHADOW_SM },
   statValue: { fontSize: 18, fontWeight: 'bold', color: DAY.ground },
   statLabel: { fontSize: 9, letterSpacing: 2, color: DAY.ground, opacity: 0.5, marginTop: 2 },
