@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { PixelDino } from "@/components/PixelDino";
+import { ScreenshotGallery } from "@/components/ScreenshotGallery";
 import { features, site } from "@/lib/site";
 
 export default function Home() {
@@ -64,6 +65,9 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {/* SCREENSHOTS */}
+      <ScreenshotGallery />
 
       {/* DOWNLOAD */}
       <section id="download" className="border-y border-black/5 bg-[#16c172]/10">

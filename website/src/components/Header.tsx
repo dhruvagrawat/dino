@@ -16,6 +16,7 @@ export function Header() {
         </Link>
         <nav className="flex items-center gap-5 text-sm font-medium text-[#1f2430]/70">
           <a href="/#features" className="hidden hover:text-[#1f2430] sm:inline">Features</a>
+          <a href="/#screenshots" className="hidden hover:text-[#1f2430] sm:inline">Screenshots</a>
           <a href="/#about" className="hidden hover:text-[#1f2430] sm:inline">About</a>
           <a
             href="/#download"
