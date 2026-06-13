@@ -15,8 +15,8 @@ export const site = {
   // set this once the app is live; leave empty to show "Coming soon"
   playStoreUrl: '',
   // direct APK download (GitHub Release). Update the URL when you cut a new version.
-  apkUrl: 'https://github.com/dhruvagrawat/dino/releases/download/v1.0.0/dino-v1.0.0.apk',
-  appVersion: '1.0.0',
+  apkUrl: 'https://github.com/dhruvagrawat/dino/releases/download/v2.0.2/dino-v2.0.2.apk',
+  appVersion: '2.0.2',
   apkSize: '65 MB',
   // brand colors (match the mobile app)
   green: '#16c172',
