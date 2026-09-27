@@ -1,15 +1,15 @@
-// Legal copy for the Dino app. Rendered as HTML on /privacy and /terms.
+// Legal copy for the Voltbot app. Rendered as HTML on /privacy and /terms.
 // Written to accurately reflect the app: no data collected, fully offline,
 // progress stored only on the user's device. Edit the strings to update.
 
 export const privacyHtml = `
 <h1>Privacy Policy</h1>
-<p>Last updated: June 13, 2026</p>
-<p>This Privacy Policy explains how the &quot;Dino&quot; mobile application (&quot;Dino&quot;, &quot;the app&quot;, &quot;the Service&quot;) handles information. Dino is developed and published by Dhruv Agarwat under the Quadcydle label (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;).</p>
-<p><strong>In short: Dino does not collect, store, or share any personal data. The game runs completely offline, has no accounts, no ads, and no analytics. Your game progress stays on your device and never reaches us or anyone else.</strong></p>
+<p>Last updated: September 27, 2026</p>
+<p>This Privacy Policy explains how the &quot;Voltbot&quot; mobile application (&quot;Voltbot&quot;, &quot;the app&quot;, &quot;the Service&quot;) handles information. Voltbot is developed and published by Dhruv Agarwat under the Quadcydle label (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;).</p>
+<p><strong>In short: Voltbot does not collect, store, or share any personal data. The game runs completely offline, has no accounts, no ads, and no analytics. Your game progress stays on your device and never reaches us or anyone else.</strong></p>
 
 <h2>Information We Collect</h2>
-<p>None. Dino does not collect any personal data or personally identifiable information. Specifically:</p>
+<p>None. Voltbot does not collect any personal data or personally identifiable information. Specifically:</p>
 <ul>
 <li>We do not ask you to create an account or sign in.</li>
 <li>We do not collect your name, email address, phone number, location, contacts, or advertising/device identifiers.</li>
@@ -18,7 +18,7 @@ export const privacyHtml = `
 </ul>
 
 <h2>Data Stored on Your Device</h2>
-<p>To make the game work, Dino saves your progress — such as high scores, points earned, and which dinos, skins, and modes you have unlocked — using your device's local storage. This information:</p>
+<p>To make the game work, Voltbot saves your progress — such as high scores, points earned, and which bots, skins, and worlds you have unlocked — using your device's local storage. This information:</p>
 <ul>
 <li>stays entirely on your device;</li>
 <li>is never transmitted to us, our servers, or any third party (we operate no servers);</li>
@@ -27,13 +27,13 @@ export const privacyHtml = `
 </ul>
 
 <h2>Permissions</h2>
-<p>Dino uses your device's vibration feature to provide haptic feedback during gameplay. This is used only to make the device vibrate and does not collect or transmit any information.</p>
+<p>Voltbot uses your device's vibration feature to provide haptic feedback during gameplay. This is used only to make the device vibrate and does not collect or transmit any information.</p>
 
 <h2>Third-Party Services</h2>
-<p>Dino does not integrate any third-party advertising, analytics, or social networks. If you download Dino from the Google Play Store, your use of the Play Store itself is governed by Google's own Privacy Policy, which we do not control.</p>
+<p>Voltbot does not integrate any third-party advertising, analytics, or social networks. If you download Voltbot from the Google Play Store, your use of the Play Store itself is governed by Google's own Privacy Policy, which we do not control.</p>
 
 <h2>Children's Privacy</h2>
-<p>Dino is suitable for users of all ages. Because the app does not collect any data from anyone, it does not knowingly collect personal information from children, or from any other user.</p>
+<p>Voltbot is suitable for users of all ages. Because the app does not collect any data from anyone, it does not knowingly collect personal information from children, or from any other user.</p>
 
 <h2>Changes to This Privacy Policy</h2>
 <p>We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated &quot;Last updated&quot; date. As the app collects no data, changes will generally be minor clarifications.</p>
@@ -49,14 +49,14 @@ export const privacyHtml = `
 
 export const termsHtml = `
 <h1>Terms and Conditions</h1>
-<p>Last updated: June 13, 2026</p>
-<p>Please read these Terms and Conditions (&quot;Terms&quot;) carefully before using the &quot;Dino&quot; mobile application (&quot;Dino&quot;, &quot;the app&quot;, &quot;the Service&quot;), developed and published by Dhruv Agarwat under the Quadcydle label (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;). By downloading or using Dino, you agree to be bound by these Terms. If you do not agree, please do not use the app.</p>
+<p>Last updated: September 27, 2026</p>
+<p>Please read these Terms and Conditions (&quot;Terms&quot;) carefully before using the &quot;Voltbot&quot; mobile application (&quot;Voltbot&quot;, &quot;the app&quot;, &quot;the Service&quot;), developed and published by Dhruv Agarwat under the Quadcydle label (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;). By downloading or using Voltbot, you agree to be bound by these Terms. If you do not agree, please do not use the app.</p>
 
 <h2>License to Use the App</h2>
-<p>We grant you a personal, non-exclusive, non-transferable, revocable license to download and use Dino on devices you own or control, for your own personal, non-commercial entertainment. You may not copy, modify, distribute, sell, rent, reverse-engineer, or create derivative works from the app except to the extent permitted by applicable law.</p>
+<p>We grant you a personal, non-exclusive, non-transferable, revocable license to download and use Voltbot on devices you own or control, for your own personal, non-commercial entertainment. You may not copy, modify, distribute, sell, rent, reverse-engineer, or create derivative works from the app except to the extent permitted by applicable law.</p>
 
 <h2>In-Game Items and Points</h2>
-<p>Dino is free to play. Points, scores, dinos, skins, modes, and other in-game items exist solely as part of the gameplay. They have no monetary value, cannot be purchased with real money, and cannot be exchanged, redeemed, or transferred for money or anything of value. The app contains no in-app purchases and no advertisements.</p>
+<p>Voltbot is free to play. Points, energy cells, scores, bots, skins, worlds, and other in-game items exist solely as part of the gameplay. They have no monetary value, cannot be purchased with real money, and cannot be exchanged, redeemed, or transferred for money or anything of value. The app contains no in-app purchases and no advertisements.</p>
 
 <h2>Intellectual Property</h2>
 <p>The app — including its code, artwork, characters, design, and name — is owned by Dhruv Agarwat / Quadcydle and is protected by applicable intellectual-property laws. These Terms do not grant you any ownership rights in the app.</p>

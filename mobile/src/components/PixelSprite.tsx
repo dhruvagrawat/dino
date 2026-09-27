@@ -1,5 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
+import { UI } from '../constants';
 import { PixelMatrix } from '../pixels';
 
 interface Props {
@@ -8,6 +9,8 @@ interface Props {
   body: string;
   accent?: string;
   eye?: string;
+  dark?: string;
+  outline?: string;
 }
 
 interface Run {
@@ -42,11 +45,17 @@ function buildRuns(matrix: PixelMatrix, pixel: number, colors: Record<string, st
   return runs;
 }
 
-function PixelSpriteInner({ matrix, pixel, body, accent, eye }: Props) {
-  const colors = { X: body, A: accent ?? body, E: eye ?? '#ffffff' };
+function PixelSpriteInner({ matrix, pixel, body, accent, eye, dark, outline }: Props) {
   const runs = React.useMemo(
-    () => buildRuns(matrix, pixel, colors),
-    [matrix, pixel, body, accent, eye]
+    () =>
+      buildRuns(matrix, pixel, {
+        X: body,
+        A: accent ?? body,
+        E: eye ?? accent ?? '#ffffff',
+        D: dark ?? UI.visor,
+        O: outline ?? UI.outline,
+      }),
+    [matrix, pixel, body, accent, eye, dark, outline]
   );
   const width = matrix[0].length * pixel;
   const height = matrix.length * pixel;

@@ -3,7 +3,7 @@
 :root {
   --background: #f7f7f7;
   --foreground: #1f2430;
-  --green: #16c172;
+  --brand: #7c5cff;
 }
 
 @theme inline {
@@ -80,7 +80,7 @@ body {
   margin: 0.35rem 0;
 }
 .legal a {
-  color: #0f9d58;
+  color: #6246ea;
   text-decoration: underline;
   word-break: break-word;
 }

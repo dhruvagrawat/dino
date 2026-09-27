@@ -1,15 +1,26 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Animated, Dimensions, Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { PixelSprite } from '../components/PixelSprite';
-import { DAY, FONT, PIXEL, SHADOW, SHADOW_SM, dinoById, modeById, skinById } from '../constants';
+import { PointsBadge } from '../components/PointsBadge';
+import {
+  APP_NAME,
+  FONT,
+  MODES,
+  PIXEL,
+  RUNNERS,
+  SHADOW_SM,
+  SITE_URL,
+  SKINS,
+  UI,
+  glow,
+  modeById,
+  runnerById,
+  skinById,
+} from '../constants';
 import * as PX from '../pixels';
 import { Profile, Screen } from '../types';
 
-const SPRITES = {
-  rex: [PX.REX_RUN_A, PX.REX_RUN_B],
-  raptor: [PX.RAPTOR_RUN_A, PX.RAPTOR_RUN_B],
-  tank: [PX.TANK_RUN_A, PX.TANK_RUN_B],
-};
+const COMPACT = Dimensions.get('window').height < 720;
 
 interface Props {
   profile: Profile;
@@ -17,75 +28,92 @@ interface Props {
 }
 
 export function MenuScreen({ profile, onNavigate }: Props) {
-  const dino = dinoById(profile.selectedDino);
+  const runner = runnerById(profile.selectedRunner);
   const skin = skinById(profile.selectedSkin);
   const mode = modeById(profile.selectedMode);
+  const sprites = PX.RUNNER_SPRITES[runner.id];
   const [frame, setFrame] = useState(0);
   const bob = useRef(new Animated.Value(0)).current;
+  const halo = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     const id = setInterval(() => setFrame((f) => (f + 1) % 2), 130);
-    Animated.loop(
+    const a = Animated.loop(
       Animated.sequence([
         Animated.timing(bob, { toValue: -8, duration: 500, useNativeDriver: true }),
         Animated.timing(bob, { toValue: 0, duration: 500, useNativeDriver: true }),
       ])
-    ).start();
-    return () => clearInterval(id);
-  }, [bob]);
+    );
+    const b = Animated.loop(
+      Animated.sequence([
+        Animated.timing(halo, { toValue: 1, duration: 1400, useNativeDriver: true }),
+        Animated.timing(halo, { toValue: 0, duration: 1400, useNativeDriver: true }),
+      ])
+    );
+    a.start();
+    b.start();
+    return () => {
+      clearInterval(id);
+      a.stop();
+      b.stop();
+    };
+  }, [bob, halo]);
 
   return (
     <View style={styles.root}>
       <View style={styles.header}>
-        <Text style={[styles.title, FONT]}>DINO</Text>
-        <View style={styles.points}>
-          <Text style={[styles.pointStar, FONT]}>★</Text>
-          <Text style={[styles.pointText, FONT]}>{profile.points}</Text>
-        </View>
+        <Text style={[styles.title, FONT]}>
+          {APP_NAME.slice(0, 4)}
+          <Text style={{ color: UI.cyan }}>{APP_NAME.slice(4)}</Text>
+        </Text>
+        <PointsBadge points={profile.points} />
       </View>
 
       <View style={styles.stage}>
+        <Animated.View
+          style={[
+            styles.halo,
+            { backgroundColor: skin.accent, opacity: halo.interpolate({ inputRange: [0, 1], outputRange: [0.08, 0.2] }), transform: [{ scale: halo.interpolate({ inputRange: [0, 1], outputRange: [0.92, 1.06] }) }] },
+          ]}
+        />
         <Animated.View style={{ transform: [{ translateY: bob }] }}>
-          <PixelSprite
-            matrix={SPRITES[dino.id][frame]}
-            pixel={PIXEL * 2.4}
-            body={skin.body}
-            accent={skin.accent}
-            eye={DAY.bg}
-          />
+          <PixelSprite matrix={frame ? sprites.runB : sprites.runA} pixel={PIXEL * (COMPACT ? 1.6 : 2.2)} body={skin.body} accent={skin.accent} />
         </Animated.View>
-        <View style={styles.stageGround} />
-        <Text style={[styles.dinoName, FONT]}>{dino.name} • {skin.name}</Text>
+        <View style={[styles.stageGround, { backgroundColor: skin.accent }, glow(skin.accent)]} />
+        <Text style={[styles.runnerName, FONT]}>
+          {runner.name} <Text style={{ color: UI.dim }}>•</Text> <Text style={{ color: skin.accent }}>{skin.name}</Text>
+        </Text>
       </View>
 
       <Pressable
-        style={({ pressed }) => [styles.playBtn, { backgroundColor: skin.body, opacity: pressed ? 0.85 : 1 }]}
+        style={({ pressed }) => [styles.playBtn, glow(UI.primary), { opacity: pressed ? 0.85 : 1, transform: [{ scale: pressed ? 0.98 : 1 }] }]}
         onPress={() => onNavigate('game')}
       >
         <Text style={[styles.playText, FONT]}>▶  PLAY</Text>
-        <Text style={[styles.playMode, FONT]}>{mode.name} MODE</Text>
+        <Text style={[styles.playMode, FONT]}>{mode.name}</Text>
       </Pressable>
 
       <View style={styles.row}>
-        <NavTile label="SHOP" sub="dinos & skins" emoji="◈" onPress={() => onNavigate('shop')} />
-        <NavTile label="MODES" sub="new worlds" emoji="◉" onPress={() => onNavigate('modes')} />
+        <NavTile label="SHOP" sub="bots & skins" icon="◈" color={UI.pink} onPress={() => onNavigate('shop')} />
+        <NavTile label="WORLDS" sub="new modes" icon="◉" color={UI.cyan} onPress={() => onNavigate('modes')} />
       </View>
 
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.stats}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ flexGrow: 0, flexShrink: 0 }} contentContainerStyle={styles.stats}>
         <Stat label="BEST" value={Math.max(...Object.values(profile.bestScores))} />
         <Stat label="RUNS" value={profile.totalRuns} />
-        <Stat label="DINOS" value={`${profile.unlockedDinos.length}/3`} />
-        <Stat label="SKINS" value={`${profile.unlockedSkins.length}/5`} />
-        <Stat label="MODES" value={`${profile.unlockedModes.length}/3`} />
+        <Stat label="CELLS" value={profile.totalCoins} />
+        <Stat label="BOTS" value={`${profile.unlockedRunners.length}/${RUNNERS.length}`} />
+        <Stat label="SKINS" value={`${profile.unlockedSkins.length}/${SKINS.length}`} />
+        <Stat label="WORLDS" value={`${profile.unlockedModes.length}/${MODES.length}`} />
       </ScrollView>
 
       <Text style={[styles.credit, FONT]}>made with ♥ by quadcydle</Text>
       <View style={styles.legalRow}>
-        <Pressable hitSlop={8} onPress={() => Linking.openURL('https://dino.dhruvagrawat.com/privacy')}>
+        <Pressable hitSlop={8} onPress={() => Linking.openURL(`${SITE_URL}/privacy`)}>
           <Text style={[styles.legalLink, FONT]}>Privacy</Text>
         </Pressable>
         <Text style={[styles.legalDot, FONT]}>·</Text>
-        <Pressable hitSlop={8} onPress={() => Linking.openURL('https://dino.dhruvagrawat.com/terms')}>
+        <Pressable hitSlop={8} onPress={() => Linking.openURL(`${SITE_URL}/terms`)}>
           <Text style={[styles.legalLink, FONT]}>Terms</Text>
         </Pressable>
       </View>
@@ -93,10 +121,10 @@ export function MenuScreen({ profile, onNavigate }: Props) {
   );
 }
 
-function NavTile({ label, sub, emoji, onPress }: { label: string; sub: string; emoji: string; onPress: () => void }) {
+function NavTile({ label, sub, icon, color, onPress }: { label: string; sub: string; icon: string; color: string; onPress: () => void }) {
   return (
-    <Pressable style={({ pressed }) => [styles.tile, { opacity: pressed ? 0.7 : 1 }]} onPress={onPress}>
-      <Text style={[styles.tileEmoji, FONT]}>{emoji}</Text>
+    <Pressable style={({ pressed }) => [styles.tile, { opacity: pressed ? 0.75 : 1 }]} onPress={onPress}>
+      <Text style={[styles.tileIcon, FONT, { color }]}>{icon}</Text>
       <Text style={[styles.tileLabel, FONT]}>{label}</Text>
       <Text style={[styles.tileSub, FONT]}>{sub}</Text>
     </Pressable>
@@ -113,29 +141,27 @@ function Stat({ label, value }: { label: string; value: number | string }) {
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: DAY.bg, paddingTop: 60, paddingHorizontal: 24 },
+  root: { flex: 1, backgroundColor: UI.bg, paddingTop: COMPACT ? 44 : 60, paddingHorizontal: 24 },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  title: { fontSize: 26, fontWeight: 'bold', letterSpacing: 3, color: DAY.ground },
-  points: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff3bf', paddingHorizontal: 16, paddingVertical: 8, borderRadius: 24, ...SHADOW_SM },
-  pointStar: { color: '#f59f00', fontSize: 16, marginRight: 6 },
-  pointText: { color: '#b8860b', fontWeight: 'bold', fontSize: 16 },
-  stage: { flex: 1, alignItems: 'center', justifyContent: 'center', minHeight: 220 },
-  stageGround: { width: 200, height: 2, backgroundColor: DAY.ground, opacity: 0.35, marginTop: 4 },
-  dinoName: { marginTop: 16, fontSize: 13, letterSpacing: 3, color: DAY.ground, opacity: 0.6 },
-  playBtn: { borderRadius: 26, paddingVertical: 22, alignItems: 'center', marginBottom: 18, ...SHADOW },
+  title: { fontSize: 26, fontWeight: 'bold', letterSpacing: 3, color: UI.text },
+  stage: { flex: 1, alignItems: 'center', justifyContent: 'center', minHeight: COMPACT ? 170 : 230 },
+  halo: { position: 'absolute', width: COMPACT ? 170 : 230, height: COMPACT ? 170 : 230, borderRadius: 115 },
+  stageGround: { width: 190, height: 3, borderRadius: 2, marginTop: 4 },
+  runnerName: { marginTop: 18, fontSize: 13, letterSpacing: 3, color: UI.text },
+  playBtn: { backgroundColor: UI.primary, borderRadius: 26, paddingVertical: COMPACT ? 16 : 22, alignItems: 'center', marginBottom: 16 },
   playText: { color: '#fff', fontSize: 24, fontWeight: 'bold', letterSpacing: 4 },
-  playMode: { color: 'rgba(255,255,255,0.85)', fontSize: 11, letterSpacing: 3, marginTop: 4 },
-  row: { flexDirection: 'row', gap: 14, marginBottom: 18 },
-  tile: { flex: 1, backgroundColor: '#fff', borderRadius: 22, paddingVertical: 20, alignItems: 'center', ...SHADOW_SM },
-  tileEmoji: { fontSize: 24, color: DAY.ground },
-  tileLabel: { fontSize: 16, fontWeight: 'bold', letterSpacing: 2, color: DAY.ground, marginTop: 6 },
-  tileSub: { fontSize: 10, letterSpacing: 1, color: DAY.ground, opacity: 0.5, marginTop: 2 },
-  stats: { gap: 10, paddingBottom: 16, paddingTop: 2 },
-  credit: { textAlign: 'center', fontSize: 10, letterSpacing: 1, color: DAY.ground, opacity: 0.4, paddingBottom: 6 },
+  playMode: { color: 'rgba(255,255,255,0.8)', fontSize: 11, letterSpacing: 3, marginTop: 4 },
+  row: { flexDirection: 'row', gap: 14, marginBottom: 16 },
+  tile: { flex: 1, backgroundColor: UI.card, borderWidth: 1, borderColor: UI.line, borderRadius: 22, paddingVertical: COMPACT ? 12 : 18, alignItems: 'center', ...SHADOW_SM },
+  tileIcon: { fontSize: 24 },
+  tileLabel: { fontSize: 16, fontWeight: 'bold', letterSpacing: 2, color: UI.text, marginTop: 6 },
+  tileSub: { fontSize: 10, letterSpacing: 1, color: UI.dim, marginTop: 2 },
+  stats: { gap: 10, paddingBottom: 14, paddingTop: 2 },
+  stat: { backgroundColor: UI.bgSoft, borderWidth: 1, borderColor: UI.line, borderRadius: 16, paddingHorizontal: 16, paddingVertical: 10, alignItems: 'center', minWidth: 72 },
+  statValue: { fontSize: 17, fontWeight: 'bold', color: UI.text },
+  statLabel: { fontSize: 9, letterSpacing: 2, color: UI.dim, marginTop: 2 },
+  credit: { textAlign: 'center', fontSize: 10, letterSpacing: 1, color: UI.dim, opacity: 0.7, paddingBottom: 6 },
   legalRow: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 8, paddingBottom: 18 },
-  legalLink: { fontSize: 10, letterSpacing: 1, color: DAY.ground, opacity: 0.45, textDecorationLine: 'underline' },
-  legalDot: { fontSize: 10, color: DAY.ground, opacity: 0.45 },
-  stat: { backgroundColor: '#fff', borderRadius: 16, paddingHorizontal: 18, paddingVertical: 11, alignItems: 'center', minWidth: 72, ...SHADOW_SM },
-  statValue: { fontSize: 18, fontWeight: 'bold', color: DAY.ground },
-  statLabel: { fontSize: 9, letterSpacing: 2, color: DAY.ground, opacity: 0.5, marginTop: 2 },
+  legalLink: { fontSize: 10, letterSpacing: 1, color: UI.dim, opacity: 0.8, textDecorationLine: 'underline' },
+  legalDot: { fontSize: 10, color: UI.dim },
 });

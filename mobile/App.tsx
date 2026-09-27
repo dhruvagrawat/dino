@@ -2,14 +2,14 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import * as Haptics from 'expo-haptics';
-import { DINOS, MODES, SKINS } from './src/constants';
+import { MODES, RUNNERS, SKINS, UI } from './src/constants';
 import { GameScreen } from './src/screens/GameScreen';
 import { MenuScreen } from './src/screens/MenuScreen';
 import { ModesScreen } from './src/screens/ModesScreen';
 import { ShopScreen } from './src/screens/ShopScreen';
 import { SplashScreen } from './src/screens/SplashScreen';
 import { DEFAULT_PROFILE, loadProfile, saveProfile } from './src/storage';
-import { DinoId, ModeId, Profile, Screen, SkinId } from './src/types';
+import { ModeId, Profile, RunnerId, Screen, SkinId } from './src/types';
 
 export default function App() {
   const [screen, setScreen] = useState<Screen>('splash');
@@ -32,12 +32,13 @@ export default function App() {
   }, []);
 
   const handleRunEnd = useCallback(
-    (score: number, earned: number) => {
+    (score: number, earned: number, cells: number) => {
       update((p) => ({
         ...p,
         points: p.points + earned,
         totalRuns: p.totalRuns + 1,
         totalScore: p.totalScore + score,
+        totalCoins: p.totalCoins + cells,
         bestScores: { ...p.bestScores, [p.selectedMode]: Math.max(p.bestScores[p.selectedMode], score) },
       }));
     },
@@ -55,9 +56,9 @@ export default function App() {
     [update]
   );
 
-  const buyDino = (id: DinoId) => {
-    const def = DINOS.find((d) => d.id === id)!;
-    buy(def.cost, (p) => ({ ...p, unlockedDinos: [...p.unlockedDinos, id], selectedDino: id }));
+  const buyRunner = (id: RunnerId) => {
+    const def = RUNNERS.find((d) => d.id === id)!;
+    buy(def.cost, (p) => ({ ...p, unlockedRunners: [...p.unlockedRunners, id], selectedRunner: id }));
   };
   const buySkin = (id: SkinId) => {
     const def = SKINS.find((s) => s.id === id)!;
@@ -75,20 +76,20 @@ export default function App() {
 
   if (screen === 'splash' || !loaded) {
     return (
-      <View style={{ flex: 1 }}>
-        <StatusBar style="dark" />
+      <View style={{ flex: 1, backgroundColor: UI.bg }}>
+        <StatusBar style="light" />
         <SplashScreen onDone={() => setScreen('menu')} />
       </View>
     );
   }
 
   return (
-    <View style={{ flex: 1 }}>
-      <StatusBar style={profile.selectedMode === 'moon' && screen === 'game' ? 'light' : 'dark'} />
+    <View style={{ flex: 1, backgroundColor: UI.bg }}>
+      <StatusBar style="light" />
       {screen === 'menu' && <MenuScreen profile={profile} onNavigate={setScreen} />}
       {screen === 'game' && (
         <GameScreen
-          key={`${profile.selectedDino}-${profile.selectedSkin}-${profile.selectedMode}`}
+          key={`${profile.selectedRunner}-${profile.selectedSkin}-${profile.selectedMode}`}
           profile={profile}
           onRunEnd={handleRunEnd}
           onExit={() => setScreen('menu')}
@@ -98,8 +99,8 @@ export default function App() {
         <ShopScreen
           profile={profile}
           onBack={() => setScreen('menu')}
-          onBuyDino={buyDino}
-          onSelectDino={(id) => select({ selectedDino: id })}
+          onBuyRunner={buyRunner}
+          onSelectRunner={(id) => select({ selectedRunner: id })}
           onBuySkin={buySkin}
           onSelectSkin={(id) => select({ selectedSkin: id })}
         />

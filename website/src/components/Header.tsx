@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PixelDino } from "./PixelDino";
+import { PixelBot } from "./PixelBot";
 import { site } from "@/lib/site";
 
 export function Header() {
@@ -7,8 +7,8 @@ export function Header() {
     <header className="sticky top-0 z-30 border-b border-black/5 bg-[#f7f7f7]/80 backdrop-blur">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-3">
         <Link href="/" className="flex items-center gap-2">
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-[#16c172]">
-            <PixelDino px={1.4} body="#1f2430" />
+          <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-b from-[#2a1a5e] to-[#0f0c24]">
+            <PixelBot px={1.9} />
           </span>
           <span className="font-mono text-lg font-bold tracking-widest text-[#1f2430]">
             {site.name.toUpperCase()}
