@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { PixelSprite } from '../components/PixelSprite';
-import { DAY, DINOS, FONT, PIXEL, SHADOW_SM, SKINS } from '../constants';
+import { PointsBadge } from '../components/PointsBadge';
+import { FONT, PIXEL, RUNNERS, SHADOW_SM, SKINS, UI, skinById } from '../constants';
 import * as PX from '../pixels';
-import { DinoId, Profile, SkinId } from '../types';
-
-const DINO_PREVIEW = { rex: PX.REX_RUN_A, raptor: PX.RAPTOR_RUN_A, tank: PX.TANK_RUN_A };
+import { Profile, RunnerId, SkinId } from '../types';
 
 interface Props {
   profile: Profile;
   onBack: () => void;
-  onBuyDino: (id: DinoId) => void;
-  onSelectDino: (id: DinoId) => void;
+  onBuyRunner: (id: RunnerId) => void;
+  onSelectRunner: (id: RunnerId) => void;
   onBuySkin: (id: SkinId) => void;
   onSelectSkin: (id: SkinId) => void;
 }
 
-export function ShopScreen({ profile, onBack, onBuyDino, onSelectDino, onBuySkin, onSelectSkin }: Props) {
-  const [tab, setTab] = useState<'dinos' | 'skins'>('dinos');
-  const selectedSkin = SKINS.find((s) => s.id === profile.selectedSkin)!;
+export function ShopScreen({ profile, onBack, onBuyRunner, onSelectRunner, onBuySkin, onSelectSkin }: Props) {
+  const [tab, setTab] = useState<'bots' | 'skins'>('bots');
+  const selectedSkin = skinById(profile.selectedSkin);
+  const selectedSprites = PX.RUNNER_SPRITES[profile.selectedRunner] ?? PX.VOLT;
 
   return (
     <View style={styles.root}>
@@ -27,33 +27,35 @@ export function ShopScreen({ profile, onBack, onBuyDino, onSelectDino, onBuySkin
           <Text style={[styles.back, FONT]}>‹ BACK</Text>
         </Pressable>
         <Text style={[styles.title, FONT]}>SHOP</Text>
-        <View style={styles.points}>
-          <Text style={[styles.pointStar, FONT]}>★</Text>
-          <Text style={[styles.pointText, FONT]}>{profile.points}</Text>
-        </View>
+        <PointsBadge points={profile.points} />
       </View>
 
       <View style={styles.tabs}>
-        <Tab label="DINOS" active={tab === 'dinos'} onPress={() => setTab('dinos')} />
+        <Tab label="BOTS" active={tab === 'bots'} onPress={() => setTab('bots')} />
         <Tab label="SKINS" active={tab === 'skins'} onPress={() => setTab('skins')} />
       </View>
 
       <ScrollView contentContainerStyle={styles.list} showsVerticalScrollIndicator={false}>
-        {tab === 'dinos'
-          ? DINOS.map((d) => {
-              const owned = profile.unlockedDinos.includes(d.id);
-              const selected = profile.selectedDino === d.id;
+        {tab === 'bots'
+          ? RUNNERS.map((d) => {
+              const owned = profile.unlockedRunners.includes(d.id);
+              const selected = profile.selectedRunner === d.id;
               const afford = profile.points >= d.cost;
               return (
                 <View key={d.id} style={[styles.card, selected && styles.cardSelected]}>
                   <View style={styles.preview}>
-                    <PixelSprite matrix={DINO_PREVIEW[d.id]} pixel={PIXEL * 1.3} body={selectedSkin.body} accent={selectedSkin.accent} eye={DAY.bg} />
+                    <PixelSprite
+                      matrix={PX.RUNNER_SPRITES[d.id].runA}
+                      pixel={PIXEL * 0.95}
+                      body={owned ? selectedSkin.body : '#4a4380'}
+                      accent={owned ? selectedSkin.accent : '#6b63b0'}
+                    />
                   </View>
                   <View style={styles.info}>
                     <Text style={[styles.name, FONT]}>{d.name}</Text>
                     <Text style={[styles.tagline, FONT]}>{d.tagline}</Text>
                   </View>
-                  {renderAction(owned, selected, afford, d.cost, () => onBuyDino(d.id), () => onSelectDino(d.id))}
+                  {renderAction(owned, selected, afford, d.cost, () => onBuyRunner(d.id), () => onSelectRunner(d.id))}
                 </View>
               );
             })
@@ -63,13 +65,12 @@ export function ShopScreen({ profile, onBack, onBuyDino, onSelectDino, onBuySkin
               const afford = profile.points >= s.cost;
               return (
                 <View key={s.id} style={[styles.card, selected && styles.cardSelected]}>
-                  <View style={[styles.preview, styles.swatchWrap]}>
-                    <View style={[styles.swatch, { backgroundColor: s.body }]} />
-                    <View style={[styles.swatch, styles.swatchSmall, { backgroundColor: s.accent }]} />
+                  <View style={styles.preview}>
+                    <PixelSprite matrix={selectedSprites.runA} pixel={PIXEL * 0.95} body={s.body} accent={s.accent} />
                   </View>
                   <View style={styles.info}>
-                    <Text style={[styles.name, FONT]}>{s.name}</Text>
-                    <Text style={[styles.tagline, FONT]}>{s.cost === 0 ? 'Default colors' : 'Premium color set'}</Text>
+                    <Text style={[styles.name, FONT, { color: s.body }]}>{s.name}</Text>
+                    <Text style={[styles.tagline, FONT]}>{s.cost === 0 ? 'Factory finish' : 'Premium paint job'}</Text>
                   </View>
                   {renderAction(owned, selected, afford, s.cost, () => onBuySkin(s.id), () => onSelectSkin(s.id))}
                 </View>
@@ -81,34 +82,24 @@ export function ShopScreen({ profile, onBack, onBuyDino, onSelectDino, onBuySkin
   );
 }
 
-function renderAction(
-  owned: boolean,
-  selected: boolean,
-  afford: boolean,
-  cost: number,
-  buy: () => void,
-  select: () => void
-) {
+function renderAction(owned: boolean, selected: boolean, afford: boolean, cost: number, buy: () => void, select: () => void) {
   if (selected) {
     return (
       <View style={[styles.actionBtn, styles.equipped]}>
-        <Text style={[styles.actionText, FONT, { color: '#fff' }]}>✓ ON</Text>
+        <Text style={[styles.actionText, FONT, { color: UI.bg }]}>✓ ON</Text>
       </View>
     );
   }
   if (owned) {
     return (
       <Pressable style={[styles.actionBtn, styles.useBtn]} onPress={select}>
-        <Text style={[styles.actionText, FONT, { color: DAY.ground }]}>USE</Text>
+        <Text style={[styles.actionText, FONT, { color: UI.text }]}>USE</Text>
       </Pressable>
     );
   }
   return (
-    <Pressable
-      style={[styles.actionBtn, afford ? styles.buyBtn : styles.lockedBtn]}
-      onPress={afford ? buy : undefined}
-    >
-      <Text style={[styles.actionText, FONT, { color: afford ? '#fff' : '#adb5bd' }]}>★ {cost}</Text>
+    <Pressable style={[styles.actionBtn, afford ? styles.buyBtn : styles.lockedBtn]} onPress={afford ? buy : undefined}>
+      <Text style={[styles.actionText, FONT, { color: afford ? UI.bg : UI.dim }]}>★ {cost}</Text>
     </Pressable>
   );
 }
@@ -122,32 +113,26 @@ function Tab({ label, active, onPress }: { label: string; active: boolean; onPre
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: DAY.bg, paddingTop: 60, paddingHorizontal: 20 },
+  root: { flex: 1, backgroundColor: UI.bg, paddingTop: 60, paddingHorizontal: 20 },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 },
-  back: { fontSize: 15, letterSpacing: 1, color: DAY.ground, fontWeight: 'bold' },
-  title: { fontSize: 22, fontWeight: 'bold', letterSpacing: 3, color: DAY.ground },
-  points: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff3bf', paddingHorizontal: 14, paddingVertical: 7, borderRadius: 22, ...SHADOW_SM },
-  pointStar: { color: '#f59f00', fontSize: 14, marginRight: 5 },
-  pointText: { color: '#b8860b', fontWeight: 'bold', fontSize: 15 },
-  tabs: { flexDirection: 'row', backgroundColor: '#e9ecef', borderRadius: 16, padding: 5, marginBottom: 18 },
+  back: { fontSize: 15, letterSpacing: 1, color: UI.dim, fontWeight: 'bold' },
+  title: { fontSize: 22, fontWeight: 'bold', letterSpacing: 3, color: UI.text },
+  tabs: { flexDirection: 'row', backgroundColor: UI.bgSoft, borderWidth: 1, borderColor: UI.line, borderRadius: 16, padding: 5, marginBottom: 18 },
   tab: { flex: 1, paddingVertical: 11, alignItems: 'center', borderRadius: 12 },
-  tabActive: { backgroundColor: '#fff', ...SHADOW_SM },
-  tabText: { fontSize: 14, letterSpacing: 2, color: DAY.ground, opacity: 0.5, fontWeight: 'bold' },
-  tabTextActive: { opacity: 1 },
-  list: { gap: 14 },
-  card: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderWidth: 2, borderColor: 'transparent', borderRadius: 20, padding: 15, ...SHADOW_SM },
-  cardSelected: { borderColor: '#2f9e44' },
-  preview: { width: 72, height: 64, alignItems: 'center', justifyContent: 'center' },
-  swatchWrap: { flexDirection: 'row', alignItems: 'flex-end' },
-  swatch: { width: 34, height: 34, borderRadius: 11 },
-  swatchSmall: { width: 20, height: 20, borderRadius: 7, marginLeft: -8, marginBottom: 4 },
+  tabActive: { backgroundColor: UI.primary },
+  tabText: { fontSize: 14, letterSpacing: 2, color: UI.dim, fontWeight: 'bold' },
+  tabTextActive: { color: '#fff' },
+  list: { gap: 12 },
+  card: { flexDirection: 'row', alignItems: 'center', backgroundColor: UI.card, borderWidth: 1, borderColor: UI.line, borderRadius: 20, padding: 14, ...SHADOW_SM },
+  cardSelected: { borderColor: UI.cyan, borderWidth: 2 },
+  preview: { width: 72, height: 76, alignItems: 'center', justifyContent: 'center' },
   info: { flex: 1, marginLeft: 10 },
-  name: { fontSize: 18, fontWeight: 'bold', letterSpacing: 1, color: DAY.ground },
-  tagline: { fontSize: 11, color: DAY.ground, opacity: 0.55, marginTop: 3, lineHeight: 15 },
+  name: { fontSize: 18, fontWeight: 'bold', letterSpacing: 1, color: UI.text },
+  tagline: { fontSize: 11, color: UI.dim, marginTop: 3, lineHeight: 15 },
   actionBtn: { minWidth: 64, paddingHorizontal: 14, paddingVertical: 11, borderRadius: 13, alignItems: 'center' },
-  buyBtn: { backgroundColor: '#f59f00', ...SHADOW_SM },
-  lockedBtn: { backgroundColor: '#f1f3f5' },
-  useBtn: { backgroundColor: '#e9ecef' },
-  equipped: { backgroundColor: '#2f9e44', ...SHADOW_SM },
+  buyBtn: { backgroundColor: UI.gold },
+  lockedBtn: { backgroundColor: UI.bgSoft },
+  useBtn: { backgroundColor: UI.cardHi, borderWidth: 1, borderColor: UI.line },
+  equipped: { backgroundColor: UI.cyan },
   actionText: { fontSize: 13, fontWeight: 'bold', letterSpacing: 1 },
 });

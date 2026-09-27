@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description: site.description,
   applicationName: site.name,
   authors: [{ name: site.author }],
-  keywords: ["dino", "endless runner", "offline game", "chrome dino", "android game", site.studio],
+  keywords: ["robot runner", "endless runner", "offline game", "neon arcade", "pixel art", "android game", site.studio],
   icons: { icon: "/icon.png", apple: "/icon.png" },
   openGraph: {
     title: `${site.name} — offline endless runner`,

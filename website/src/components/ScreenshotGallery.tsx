@@ -1,12 +1,13 @@
 import Image from "next/image";
 
 const shots = [
-  { src: "/screenshots/01-home.jpg", label: "Home & your runner" },
-  { src: "/screenshots/02-play.jpg", label: "Endless gameplay" },
-  { src: "/screenshots/03-gameover.jpg", label: "Beat your best" },
-  { src: "/screenshots/04-shop.jpg", label: "Unlock 3 dinos" },
-  { src: "/screenshots/05-skins.jpg", label: "5 collectible skins" },
-  { src: "/screenshots/06-icon.jpg", label: "Tap to play" },
+  { src: "/screenshots/01-home.jpg", label: "Pick your bot" },
+  { src: "/screenshots/02-play.jpg", label: "Neon City by day" },
+  { src: "/screenshots/03-night.jpg", label: "…and by night" },
+  { src: "/screenshots/04-overdrive.jpg", label: "Overdrive at 2× points" },
+  { src: "/screenshots/08-orbit.jpg", label: "Low-gravity Orbit" },
+  { src: "/screenshots/05-shop.jpg", label: "Unlock 4 bots" },
+  { src: "/screenshots/09-gameover.jpg", label: "Beat your best" },
 ];
 
 export function ScreenshotGallery() {
@@ -27,7 +28,7 @@ export function ScreenshotGallery() {
                 src={s.src}
                 alt={s.label}
                 width={216}
-                height={480}
+                height={384}
                 className="block h-auto w-[180px] sm:w-[216px]"
               />
             </div>

@@ -1,271 +1,272 @@
-// Pixel-art sprite matrices.
-// '.' = transparent, 'X' = body color, 'A' = accent color, 'E' = eye (white)
+// Pixel-art sprite matrices, all original artwork.
+// '.' = transparent, 'X' = body color, 'A' = accent color, 'E' = eye glow,
+// 'D' = dark visor/feet, 'O' = outline (added automatically by `outlined`).
 
 export type PixelMatrix = string[];
 
-// ---------------------------------------------------------------- T-REX
-export const REX_RUN_A: PixelMatrix = [
-  '..........XXXXXXXXX.',
-  '.........XXEXXXXXXX.',
-  '.........XXXXXXXXXX.',
-  '.........XXXXXXXXXX.',
-  '.........XXXXX......',
-  '.........XXXXXXXX...',
-  'X.......XXXXXX......',
-  'X......XXXXXXX......',
-  'XX....XXXXXXXXXX....',
-  'XXX..XXXXXXXXXXX....',
-  'XXXXXXXXXXXXXXXX.X..',
-  'XXXXXXXXXXXXXXXXXX..',
-  'XXXXXXXXXXXXXXXX....',
-  '.XXXXXXXXXXXXXX.....',
-  '..XXXXXXXXXXXX......',
-  '...XXXXXXXXXX.......',
-  '....XXXXXXXX........',
-  '.....XX...XXX.......',
-  '.....XX....XX.......',
-  '.....XXX...XXX......',
+/** Pads a matrix by one pixel and traces an 'O' outline around every filled pixel. */
+export function outlined(m: PixelMatrix): PixelMatrix {
+  const h = m.length;
+  const w = m[0].length;
+  const at = (x: number, y: number) => (y >= 0 && y < h && x >= 0 && x < w ? m[y][x] : '.');
+  const out: string[] = [];
+  for (let y = -1; y <= h; y++) {
+    let row = '';
+    for (let x = -1; x <= w; x++) {
+      const ch = at(x, y);
+      if (ch !== '.') row += ch;
+      else if (at(x - 1, y) !== '.' || at(x + 1, y) !== '.' || at(x, y - 1) !== '.' || at(x, y + 1) !== '.') row += 'O';
+      else row += '.';
+    }
+    out.push(row);
+  }
+  return out;
+}
+
+export interface RunnerSprites {
+  runA: PixelMatrix;
+  runB: PixelMatrix;
+  jump: PixelMatrix;
+  dead: PixelMatrix;
+  duckA: PixelMatrix;
+  duckB: PixelMatrix;
+}
+
+function runner(top: string[], deadTop: string[], legsA: string[], legsB: string[], jumpLegs: string[]): RunnerSprites {
+  return {
+    runA: outlined([...top, ...legsA]),
+    runB: outlined([...top, ...legsB]),
+    jump: outlined([...top.slice(0, top.length - 1), ...jumpLegs]),
+    dead: outlined([...deadTop, ...legsB]),
+    duckA: DUCK_A,
+    duckB: DUCK_B,
+  };
+}
+
+// ---------------------------------------------------------------- shared duck pose (18px wide bots squash to 22x11)
+const DUCK_TOP = [
+  '...........XXXXXXXXX..',
+  '..........XXXXXXXXXXX.',
+  '..........XDDDDEDDEDX.',
+  '..........XDDDDEDDEDX.',
+  '...XXXXXXXXXXXXXXXXXX.',
+  '..XXXXXXAAXXXXXXXXX...',
+  '..XXXXXXAAXXXXXXX.....',
+  '...XXXXXXXXXXXXX......',
 ];
+const DUCK_A = outlined([
+  ...DUCK_TOP,
+  '....XX......XX........',
+  '...XX........XX.......',
+  '...DDD........DDD.....',
+]);
+const DUCK_B = outlined([
+  ...DUCK_TOP,
+  '....XX.....XX.........',
+  '.....XX...XX..........',
+  '.....DDD..DDD.........',
+]);
 
-export const REX_RUN_B: PixelMatrix = [
-  ...REX_RUN_A.slice(0, 17),
-  '.....XXX...XX.......',
-  '......XX...XX.......',
-  '......XXX..XXX......',
+// ---------------------------------------------------------------- VOLT (round head, antenna, twin eyes)
+const VOLT_HEAD = [
+  '..........AA......',
+  '..........X.......',
+  '......XXXXXXXXX...',
+  '.....XXXXXXXXXXX..',
+  '.....XDDDDDDDDDX..',
+  '.....XDDDDEDDEDX..',
+  '.....XDDDDEDDEDX..',
+  '.....XXXXXXXXXXX..',
+  '......XXXXXXXXX...',
+  '.........XXX......',
 ];
-
-export const REX_JUMP: PixelMatrix = [
-  ...REX_RUN_A.slice(0, 17),
-  '.....XX...XX........',
-  '.....XX...XX........',
-  '.....XXX..XXX.......',
+const VOLT_BODY = [
+  '.......XXXXXXXX...',
+  '.....XXXXXXXXXXXX.',
+  '.....XXXXXAAXXXXX.',
+  '.....XXXXXAAXXX...',
+  '.......XXXXXXXX...',
+  '.......XXXXXXXX...',
+  '........XX..XX....',
 ];
+export const VOLT = runner(
+  [...VOLT_HEAD, ...VOLT_BODY],
+  [
+    '........AA........',
+    '.........X........',
+    ...VOLT_HEAD.slice(2, 5),
+    '.....XDDDDDDDDDX..',
+    '.....XDDDEEDEEDX..',
+    ...VOLT_HEAD.slice(7),
+    ...VOLT_BODY,
+  ],
+  ['.......XX....XX...', '......XX......XX..', '......DDD.....DDD.'],
+  ['........XX..XX....', '........XX..XX....', '........DDD.DDD...'],
+  ['........XX..XX....', '.......XX..XX.....', '.......DDD.DDD....', '..................'],
+);
 
-export const REX_DEAD: PixelMatrix = [
-  '..........XXXXXXXXX.',
-  '.........XXAXAXXXXX.',
-  '.........XXXXXXXXXX.',
-  ...REX_RUN_A.slice(3, 17),
-  '.....XX...XX........',
-  '.....XX...XX........',
-  '.....XXX..XXX.......',
+// ---------------------------------------------------------------- ZIP (sleek fin, visor stripe, jet pack + glowing boots)
+const ZIP_TOP = [
+  '........XA........',
+  '.......XXXXXXXX...',
+  '.....XXXXXXXXXXXX.',
+  '.....XXXXXXXXXXXX.',
+  '.....XXDDDDDDDDDX.',
+  '.....XXDDDDEEEEEX.',
+  '.....XXXDDDDDDDDX.',
+  '......XXXXXXXXXX..',
+  '........XXXXXX....',
+  '.........XXX......',
+  '.......XXXXXXX....',
+  '....AAXXXXXXXXXX..',
+  '....AAXXXAXXXXXX..',
+  '....AAXXXAXXXX....',
+  '......XXXXXXXX....',
+  '.......XXXXXX.....',
+  '.......XX..XX.....',
 ];
+export const ZIP = runner(
+  ZIP_TOP,
+  [...ZIP_TOP.slice(0, 5), '.....XXDDDDDDDDDX.', ...ZIP_TOP.slice(6)],
+  ['......XX....XX....', '.....XX......XX...', '.....AAA.....AAA..'],
+  ['.......XX..XX.....', '.......XX..XX.....', '.......AAA.AAA....'],
+  ['.......XX..XX.....', '......XX..XX......', '......AAA.AAA.....', '..................'],
+);
 
-export const REX_DUCK_A: PixelMatrix = [
-  '....................XXXXXXX',
-  '...................XXEXXXXX',
-  '...................XXXXXXXX',
-  'X..................XXXXX...',
-  'XX......XXXXXXXXXXXXXXXXXX.',
-  'XXX..XXXXXXXXXXXXXXXXXX....',
-  'XXXXXXXXXXXXXXXXXXXXXXX....',
-  '.XXXXXXXXXXXXXXXXXXXX.X....',
-  '..XXXXXXXXXXXXXXXXXX.......',
-  '....XXXXXXXXXXXXXX.........',
-  '......XX....XXX............',
-  '......XX.....XX............',
-  '......XXX....XXX...........',
+// ---------------------------------------------------------------- BRICK (boxy, armored shoulders, grill mouth)
+const BRICK_TOP = [
+  '...A.........A....',
+  '...XXXXXXXXXXXX...',
+  '..XXXXXXXXXXXXXX..',
+  '..XXDDDDDDDDDDXX..',
+  '..XXDDDDEEDDEEXX..',
+  '..XXDDDDEEDDEEXX..',
+  '..XXDDDDDDDDDDXX..',
+  '..XXXXXXXXXXXXXX..',
+  '...XAXAXAXAXAXX...',
+  '.....XXXXXXXX.....',
+  '..XXXXXXXXXXXXXX..',
+  '.AAXXXXXXXXXXXXAA.',
+  '.AAXXXAAAAXXXXXAA.',
+  '.XXXXXAAAAXXXXXXX.',
+  '..XXXXXXXXXXXXXX..',
+  '...XXXXXXXXXXXX...',
+  '....XXX....XXX....',
 ];
+export const BRICK = runner(
+  BRICK_TOP,
+  [...BRICK_TOP.slice(0, 4), '..XXDDDDDDDDDDXX..', '..XXDDDEEEDEEEXX..', ...BRICK_TOP.slice(6)],
+  ['...XXX......XXX...', '...XXX......XXX...', '..DDDD.....DDDD...'],
+  ['....XXX...XXX.....', '....XXX...XXX.....', '....DDDD..DDDD....'],
+  ['....XXX....XXX....', '....XXX....XXX....', '...DDDD....DDDD...', '..................'],
+);
 
-export const REX_DUCK_B: PixelMatrix = [
-  ...REX_DUCK_A.slice(0, 10),
-  '......XXX...XX.............',
-  '.......XX...XX.............',
-  '.......XXX..XXX............',
+// ---------------------------------------------------------------- NOVA (dome head, magnet antenna, cyclops eye)
+const NOVA_TOP = [
+  '.......A...A......',
+  '.......A...A......',
+  '.......AAAAA......',
+  '......XXXXXXX.....',
+  '.....XXXXXXXXX....',
+  '....XXDDDDDDDXX...',
+  '....XDDDDDEEDDX...',
+  '....XDDDDDEEDDX...',
+  '....XXDDDDDDDXX...',
+  '.....XXXXXXXXX....',
+  '.......XXXXX......',
+  '.....XXXXXXXXXX...',
+  '....XXXXAAAXXXXX..',
+  '....XXXXAAAXXX....',
+  '.....XXXXXXXXX....',
+  '......XXXXXXX.....',
+  '.......XX.XX......',
 ];
+export const NOVA = runner(
+  NOVA_TOP,
+  [...NOVA_TOP.slice(0, 6), '....XDDDDDDDDDX...', '....XDDDDEEEEDX...', ...NOVA_TOP.slice(8)],
+  ['......XX...XX.....', '.....XX.....XX....', '.....DDD....DDD...'],
+  ['.......XX.XX......', '.......XX.XX......', '......DDD.DDD.....'],
+  ['.......XX.XX......', '......XX..XX......', '......DDD.DDD.....', '..................'],
+);
 
-// ---------------------------------------------------------------- RAPTOR (slim, striped)
-export const RAPTOR_RUN_A: PixelMatrix = [
-  '...........XXXXXXXX.',
-  '..........XXEXXXXXX.',
-  '..........XXXXXXXXX.',
-  '..........XXXXAA....',
-  '..........XXXX......',
-  '..........XXXXXXX...',
-  'X........XXXXX......',
-  'XX......XXXXXX......',
-  '.XX....XXXXXXXX.....',
-  '..XX..XXXAXXXXX.....',
-  '...XXXXXXXXAXXXX.X..',
-  '....XXXXXAXXXXXXXX..',
-  '.....XXXXXXAXXXX....',
-  '......XXXXXXXXX.....',
-  '.......XXXXXXX......',
-  '.......XXXXXX.......',
-  '.......XXXXXX.......',
-  '.......XX..XXX......',
-  '.......XX...XX......',
-  '.......XXX..XXX.....',
-];
-
-export const RAPTOR_RUN_B: PixelMatrix = [
-  ...RAPTOR_RUN_A.slice(0, 17),
-  '.......XXX..XX......',
-  '........XX..XX......',
-  '........XXX.XXX.....',
-];
-
-export const RAPTOR_JUMP: PixelMatrix = [
-  ...RAPTOR_RUN_A.slice(0, 17),
-  '.......XX...XX......',
-  '.......XX...XX......',
-  '.......XXX..XXX.....',
-];
-
-export const RAPTOR_DEAD: PixelMatrix = [
-  '...........XXXXXXXX.',
-  '..........XXAXAXXXX.',
-  ...RAPTOR_RUN_A.slice(2, 17),
-  '.......XX...XX......',
-  '.......XX...XX......',
-  '.......XXX..XXX.....',
-];
-
-export const RAPTOR_DUCK_A: PixelMatrix = REX_DUCK_A;
-export const RAPTOR_DUCK_B: PixelMatrix = REX_DUCK_B;
-
-// ---------------------------------------------------------------- TANK (triceratops, horned & bulky)
-export const TANK_RUN_A: PixelMatrix = [
-  '........A....A......',
-  '........AA..AA......',
-  '........XXXXXXXXX...',
-  '.......XXEXXXXXXXX..',
-  '......AXXXXXXXXXXX..',
-  '.....AAXXXXXXXXXXX..',
-  '......AXXXXXXX......',
-  'X....XXXXXXXXXXX....',
-  'XX..XXXXXXXXXXXX....',
-  'XXXXXXXXXXXXXXXXX...',
-  'XXXXXXXXXXXXXXXXXX..',
-  'XXXXXXXXXXXXXXXXXX..',
-  'XXXXXXXXXXXXXXXX....',
-  '.XXXXXXXXXXXXXXX....',
-  '..XXXXXXXXXXXXX.....',
-  '...XXXXXXXXXXX......',
-  '....XXXXXXXXX.......',
-  '....XXX...XXXX......',
-  '....XXX....XXX......',
-  '....XXXX...XXXX.....',
-];
-
-export const TANK_RUN_B: PixelMatrix = [
-  ...TANK_RUN_A.slice(0, 17),
-  '....XXXX...XXX......',
-  '.....XXX...XXX......',
-  '.....XXXX..XXXX.....',
-];
-
-export const TANK_JUMP: PixelMatrix = [
-  ...TANK_RUN_A.slice(0, 17),
-  '....XXX....XXX......',
-  '....XXX....XXX......',
-  '....XXXX...XXXX.....',
-];
-
-export const TANK_DEAD: PixelMatrix = [
-  TANK_RUN_A[0],
-  TANK_RUN_A[1],
-  '........XXXXXXXXX...',
-  '.......XXAXAXXXXXX..',
-  ...TANK_RUN_A.slice(4, 17),
-  '....XXX....XXX......',
-  '....XXX....XXX......',
-  '....XXXX...XXXX.....',
-];
-
-export const TANK_DUCK_A: PixelMatrix = REX_DUCK_A;
-export const TANK_DUCK_B: PixelMatrix = REX_DUCK_B;
+export const RUNNER_SPRITES = { volt: VOLT, zip: ZIP, brick: BRICK, nova: NOVA };
 
 // ---------------------------------------------------------------- OBSTACLES
-export const CACTUS_SMALL: PixelMatrix = [
-  '....XX....',
-  '...XXXX...',
-  '...XXXX...',
-  '.X.XXXX.X.',
-  'XX.XXXX.XX',
-  'XX.XXXX.XX',
-  'XX.XXXX.XX',
-  'XXXXXXX.XX',
-  '.XXXXXXXXX',
-  '...XXXX...',
-  '...XXXX...',
-  '...XXXX...',
-  '...XXXX...',
-  '...XXXX...',
-  '...XXXX...',
-  '...XXXX...',
-];
+export const CONE: PixelMatrix = outlined([
+  '.....XX.....',
+  '.....XX.....',
+  '....XXXX....',
+  '....AAAA....',
+  '....AAAA....',
+  '...XXXXXX...',
+  '...XXXXXX...',
+  '..AAAAAAAA..',
+  '..AAAAAAAA..',
+  '..XXXXXXXX..',
+  '.XXXXXXXXXX.',
+  'XXXXXXXXXXXX',
+  'XXXXXXXXXXXX',
+]);
 
-export const CACTUS_LARGE: PixelMatrix = [
-  '.....XXX......',
-  '....XXXXX.....',
-  '....XXXXX.....',
-  '.XX.XXXXX.....',
-  'XXX.XXXXX.XX..',
-  'XXX.XXXXX.XXX.',
-  'XXX.XXXXX.XXX.',
-  'XXX.XXXXX.XXX.',
-  'XXX.XXXXX.XXX.',
-  'XXXXXXXXX.XXX.',
-  '.XXXXXXXX.XXX.',
-  '....XXXXXXXXX.',
-  '....XXXXXXXX..',
-  '....XXXXX.....',
-  '....XXXXX.....',
-  '....XXXXX.....',
-  '....XXXXX.....',
-  '....XXXXX.....',
-  '....XXXXX.....',
-  '....XXXXX.....',
-  '....XXXXX.....',
-  '....XXXXX.....',
-];
+export const CRATES: PixelMatrix = outlined([
+  '..XXXXXXXXXX..',
+  '..XAAXXXXAAX..',
+  '..XXAAXXAAXX..',
+  '..XXXAAAAXXX..',
+  '..XXXXAAXXXX..',
+  '..XXXAAAAXXX..',
+  '..XXAAXXAAXX..',
+  '..XAAXXXXAAX..',
+  '..XXXXXXXXXX..',
+  'XXXXXXXXXXXXXX',
+  'XAAXXXXXXXXAAX',
+  'XXAAXXXXXXAAXX',
+  'XXXAAXXXXAAXXX',
+  'XXXXAAXXAAXXXX',
+  'XXXXXAAAAXXXXX',
+  'XXXXAAXXAAXXXX',
+  'XXXAAXXXXAAXXX',
+  'XXAAXXXXXXAAXX',
+  'XAAXXXXXXXXAAX',
+  'XXXXXXXXXXXXXX',
+]);
 
-export const BIRD_UP: PixelMatrix = [
-  '..........X.........',
-  '..........XX........',
-  '..........XXX.......',
-  '..........XXXX......',
-  '..........XXXXX.....',
-  'XXXX...XXXXXXXXXXXX.',
-  '.XXXXXXXXXXXXXXXXXXX',
-  '..XXXXXXXXXXXXXX....',
-  '...XXXXXXXXXXX......',
+const DRONE_BODY = [
+  '...X........X.....',
+  '...XXXXXXXXXX.....',
+  '..XXXXXXXXXXXX....',
+  '.XXDDDDDDDDDDXX...',
+  '.XXDAADDDDDDDXX...',
+  '..XXXXXXXXXXXX....',
+  '....X......X......',
+  '...XX......XX.....',
 ];
+export const DRONE_UP: PixelMatrix = outlined(['.XXXXX....XXXXX...', ...DRONE_BODY]);
+export const DRONE_DOWN: PixelMatrix = outlined([
+  '..XXX......XXX....',
+  ...DRONE_BODY.slice(0, 4),
+  '.XXDDDDDDDDDDXX...',
+  ...DRONE_BODY.slice(5),
+]);
 
-export const BIRD_DOWN: PixelMatrix = [
-  '....................',
-  '....................',
-  '....................',
-  '....................',
-  '....................',
-  'XXXX...XXXXXXXXXXXX.',
-  '.XXXXXXXXXXXXXXXXXXX',
-  '..XXXXXXXXXXXXXX....',
-  '...XXXXXXXXXXX......',
-  '..........XXXX......',
-  '..........XXX.......',
-  '..........XX........',
-  '..........X.........',
-];
+export const METEOR: PixelMatrix = outlined([
+  '.XXX....AA..........',
+  'XXXXXX...AAAA.......',
+  'XXXXXXX....AAAAAA...',
+  'XXXXXXXX......AAAAAA',
+  'XXXXXXXX...AAAAAA...',
+  'XXXXXXX..AAAA.......',
+  '.XXXXX..AA..........',
+]);
 
-export const METEOR: PixelMatrix = [
-  '..........AA....XXX.',
-  '.......AAAA...XXXXXX',
-  '...AAAAAA....XXXXXXX',
-  'AAAAAA......XXXXXXXX',
-  '...AAAAAA...XXXXXXXX',
-  '.......AAAA..XXXXXXX',
-  '..........AA..XXXXX.',
-];
-
-export const ROCK: PixelMatrix = [
-  '...XXXX...',
-  '..XXXXXX..',
-  '.XXXXXXXX.',
-  'XXXXXXXXXX',
-  'XXXXXXXXXX',
-  'XXXXXXXXXX',
+export const CELL: PixelMatrix = [
+  '..XXX..',
+  '.XAAXX.',
+  'XAAXXXX',
+  'XAXXXXX',
+  'XXXXXXX',
+  '.XXXXX.',
+  '..XXX..',
 ];
 
 export function matrixSize(m: PixelMatrix): { w: number; h: number } {

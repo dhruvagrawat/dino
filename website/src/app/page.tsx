@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { PixelDino } from "@/components/PixelDino";
+import { PixelBot } from "@/components/PixelBot";
 import { ScreenshotGallery } from "@/components/ScreenshotGallery";
 import { features, site } from "@/lib/site";
 
@@ -13,8 +13,8 @@ export default function Home() {
       {/* HERO */}
       <section className="ground-grid relative overflow-hidden border-b border-black/5">
         <div className="mx-auto flex max-w-5xl flex-col items-center px-5 py-20 text-center sm:py-28">
-          <span className="mb-7 grid place-items-center rounded-[2rem] bg-[#16c172] p-7 shadow-xl shadow-[#16c172]/30">
-            <PixelDino px={6} body="#1f2430" />
+          <span className="mb-7 grid place-items-center rounded-[2rem] bg-gradient-to-b from-[#2a1a5e] to-[#0f0c24] p-9 shadow-xl shadow-[#7c5cff]/30">
+            <PixelBot px={9} />
           </span>
           <h1 className="font-mono text-5xl font-extrabold tracking-tight text-[#1f2430] sm:text-7xl">
             {site.name.toUpperCase()}
@@ -70,16 +70,16 @@ export default function Home() {
       <ScreenshotGallery />
 
       {/* DOWNLOAD */}
-      <section id="download" className="border-y border-black/5 bg-[#16c172]/10">
+      <section id="download" className="border-y border-black/5 bg-[#7c5cff]/10">
         <div className="mx-auto max-w-5xl px-5 py-20 text-center">
-          <h2 className="font-mono text-2xl font-bold tracking-widest text-[#1f2430]">GET DINO</h2>
+          <h2 className="font-mono text-2xl font-bold tracking-widest text-[#1f2430]">GET {site.name.toUpperCase()}</h2>
           <p className="mx-auto mt-3 max-w-md text-[#1f2430]/65">
             Download the Android app now. Built with Expo &amp; React Native.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <a
               href={site.apkUrl}
-              className="rounded-2xl bg-[#16c172] px-8 py-4 text-base font-semibold text-white shadow-lg shadow-[#16c172]/30 transition hover:opacity-90"
+              className="rounded-2xl bg-[#7c5cff] px-8 py-4 text-base font-semibold text-white shadow-lg shadow-[#7c5cff]/30 transition hover:opacity-90"
             >
               ⬇ Download APK (Android)
             </a>
@@ -113,9 +113,9 @@ export default function Home() {
             <p className="mt-5 leading-relaxed text-[#1f2430]/70">
               {site.name} is an indie passion project by{" "}
               <span className="font-semibold text-[#1f2430]">{site.author}</span> under the{" "}
-              <span className="font-semibold text-[#1f2430]">{site.studio}</span> label — a love
-              letter to the classic Chrome dino game, rebuilt with modern polish, unlockables and
-              extra modes. No tracking, no servers, just a fun runner that respects your privacy.
+              <span className="font-semibold text-[#1f2430]">{site.studio}</span> label — an original
+              neon-arcade runner starring a squad of pixel robots, with unlockable bots, skins and
+              worlds. No tracking, no servers, just a fun runner that respects your privacy.
             </p>
           </div>
           <div>

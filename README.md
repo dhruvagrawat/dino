@@ -1,15 +1,16 @@
-# 🦖 Dino — monorepo
+# 🤖 Voltbot — monorepo
 
-An offline Chrome-dino-style endless runner, plus its marketing website.
+An original, offline neon-arcade endless runner starring pixel robots, plus its marketing website.
 
 ```
-dino/
+voltbot/
 ├── mobile/     # Expo + React Native + TypeScript game (the app)
 └── website/    # Next.js landing page + privacy policy + terms
 ```
 
 ## mobile/ — the game
-Polished, fully offline endless runner. Unlockable dinos, skins and modes; all
+Polished, fully offline endless runner. Unlockable bots, skins and worlds, power-ups
+and close-call combos; all
 progress stored locally on the device. See [mobile/README.md](mobile/README.md).
 
 ```bash

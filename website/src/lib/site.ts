@@ -1,9 +1,9 @@
 // Central place for site-wide constants — edit these and everything updates.
 export const site = {
-  name: 'Dino',
-  tagline: 'tap • run • survive',
+  name: 'Voltbot',
+  tagline: 'jump • dash • glow',
   description:
-    'A polished, fully offline endless runner inspired by the Chrome dino game. Unlock dinos, skins and game modes — all progress saved on your device, nothing sent to any server.',
+    'A neon-arcade endless runner starring pixel robots. Grab energy cells, chain close calls, and unlock bots, skins and worlds — fully offline, with all progress saved on your device.',
   url: 'https://dino.dhruvagrawat.com',
   author: 'Dhruv Agarwat',
   studio: 'Quadcydle',
@@ -19,26 +19,32 @@ export const site = {
   appVersion: '2.0.2',
   apkSize: '65 MB',
   // brand colors (match the mobile app)
-  green: '#16c172',
-  dark: '#1f2430',
-  lastUpdated: 'June 13, 2026',
+  primary: '#7c5cff',
+  cyan: '#2ee6d6',
+  dark: '#0f0c24',
+  lastUpdated: 'September 27, 2026',
 };
 
 export const features = [
   {
-    icon: '🦖',
-    title: '3 unlockable dinos',
-    body: 'Start as Rex, then earn the double-jumping Raptor and the armored Tank.',
+    icon: '🤖',
+    title: '4 unlockable bots',
+    body: 'Start as Volt, then earn jet-booted Zip (double jump), armored Brick (shield) and magnetic Nova.',
+  },
+  {
+    icon: '⚡',
+    title: 'Power-ups & combos',
+    body: 'Collect energy cells, grab Magnet, Shield and 2× Score boosts, and chain close calls for bonus points.',
+  },
+  {
+    icon: '🌆',
+    title: '3 neon worlds',
+    body: 'Neon City with a day-to-night cycle, sunset Overdrive (2× points) and low-gravity Orbit with meteors.',
   },
   {
     icon: '🎨',
-    title: '5 collectible skins',
-    body: 'Classic, Neon, Lava, Ice and Gold — spend points to deck out your runner.',
-  },
-  {
-    icon: '🌗',
-    title: '3 game modes',
-    body: 'Classic desert, high-speed Frenzy (2× points) and low-gravity Moon with meteors.',
+    title: '5 paint jobs',
+    body: 'Core, Toxic, Sunset, Frost and Gold — spend points to customise your bot.',
   },
   {
     icon: '📴',
@@ -49,10 +55,5 @@ export const features = [
     icon: '🔒',
     title: 'Zero data collected',
     body: 'We never gather, store or transmit any of your information. Ever.',
-  },
-  {
-    icon: '⚡',
-    title: 'Smooth & tiny',
-    body: 'Buttery pixel-art animation, haptic feedback, and a lightweight download.',
   },
 ];

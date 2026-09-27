@@ -1,13 +1,13 @@
-export type DinoId = 'rex' | 'raptor' | 'tank';
+export type RunnerId = 'volt' | 'zip' | 'brick' | 'nova';
 export type SkinId = 'classic' | 'neon' | 'lava' | 'ice' | 'gold';
 export type ModeId = 'classic' | 'frenzy' | 'moon';
 
-export interface DinoDef {
-  id: DinoId;
+export interface RunnerDef {
+  id: RunnerId;
   name: string;
   cost: number;
   tagline: string;
-  ability: 'none' | 'doubleJump' | 'shield';
+  ability: 'none' | 'doubleJump' | 'shield' | 'magnet';
 }
 
 export interface SkinDef {
@@ -29,7 +29,6 @@ export interface ModeDef {
   gravityMult: number;
   pointsMult: number;
   spawnGapMult: number;
-  night: boolean;
   meteors: boolean;
 }
 
@@ -37,11 +36,12 @@ export interface Profile {
   points: number;
   totalRuns: number;
   totalScore: number;
+  totalCoins: number;
   bestScores: Record<ModeId, number>;
-  unlockedDinos: DinoId[];
+  unlockedRunners: RunnerId[];
   unlockedSkins: SkinId[];
   unlockedModes: ModeId[];
-  selectedDino: DinoId;
+  selectedRunner: RunnerId;
   selectedSkin: SkinId;
   selectedMode: ModeId;
 }

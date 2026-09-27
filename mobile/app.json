@@ -1,20 +1,20 @@
 {
   "expo": {
-    "name": "Dino",
+    "name": "Voltbot",
     "slug": "dino-dash",
-    "version": "3.0.2",
+    "version": "4.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.dhruvagrawat.dinodash"
     },
     "android": {
       "package": "com.dhruvagrawat.dinodash",
-      "versionCode": 4,
+      "versionCode": 5,
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#0f0c24",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
@@ -35,7 +35,7 @@
         {
           "image": "./assets/splash-icon.png",
           "resizeMode": "contain",
-          "backgroundColor": "#f7f7f7"
+          "backgroundColor": "#0f0c24"
         }
       ]
     ]
